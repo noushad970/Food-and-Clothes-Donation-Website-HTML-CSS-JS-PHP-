@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/header_style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
+            
+        </div>
+        <div class="header-right">
+            <button class="header-button" onclick="location.href='index.html'">Home</button>
+            <button class="header-button" onclick="location.href='posts.html'">Posts</button>
+            <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
+            <button class="header-button" onclick="location.href='organization-details.html'">Your Organization</button>
+            <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
+            <button class="header-button" onclick="location.href='contact.html'">Contact</button>
+            <button class="header-button" onclick="location.href='about.html'">About us</button>
+            <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
+        </div>
+    </header>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>User Profile</h2>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-pic-container">
+                <img id="profilePic" src="default-avatar.png" alt="Profile Picture" class="profile-pic">
+                <label for="profilePicUpload" class="upload-btn">Upload Profile Picture</label>
+                <input type="file" id="profilePicUpload" accept="image/*" class="profile-pic-upload" onchange="previewProfilePic()">
+            </div>
+
+            <div class="user-details">
+                <p><strong>First Name:</strong> <span id="firstName">John</span></p>
+                <p><strong>Last Name:</strong> <span id="lastName">Doe</span></p>
+                <p><strong>Full Name:</strong> <span id="fullName">John Doe</span></p>
+                <p><strong>Username:</strong> <span id="username">john_doe</span></p>
+                <p><strong>Email:</strong> <span id="email">john.doe@example.com</span></p>
+                <p><strong>Age:</strong> <span id="age">30</span></p>
+                <p><strong>Occupation:</strong> <span id="occupation">Employee</span></p>
+                <p><strong>Donation Type:</strong> <span id="donationType">Food</span></p>
+
+                <h3>Address Details</h3>
+                <p><strong>Country:</strong> <span id="country">USA</span></p>
+                <p><strong>District:</strong> <span id="district">California</span></p>
+                <p><strong>Sub-district:</strong> <span id="subDistrict">Los Angeles</span></p>
+                <p><strong>Village/City:</strong> <span id="villageCity">Downtown</span></p>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <button class="btn" onclick="editProfile()">Edit Profile</button>
+            <button class="btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Preview profile picture when uploaded
+        function previewProfilePic() {
+            const file = document.getElementById("profilePicUpload").files[0];
+            const reader = new FileReader();
+            
+            reader.onloadend = function () {
+                const profilePic = document.getElementById("profilePic");
+                profilePic.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Placeholder functions for editing profile and logout
+        function editProfile() {
+            alert("Edit Profile functionality is not implemented yet.");
+        }
+
+        function logout() {
+            alert("Logout functionality is not implemented yet.");
+        }
+    </script>
+</body>
+</html>

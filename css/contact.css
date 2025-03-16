@@ -1,0 +1,17 @@
+body {
+    background-color: #fff3cd;
+    font-family: Arial, sans-serif;
+}
+
+.contact-container {
+    width: 60%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h2 {
+    color: #ff9800;
+}

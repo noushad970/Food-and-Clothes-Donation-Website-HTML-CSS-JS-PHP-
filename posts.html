@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <link rel="stylesheet" href="css/posts.css">
+    <link rel="stylesheet" href="css/header_style.css">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="header-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
+            
+        </div>
+        <div class="header-right">
+            <button class="header-button" onclick="location.href='index.html'">Home</button>
+            <button class="header-button" onclick="location.href='profile.html'">Profile</button>
+            <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
+            <button class="header-button" onclick="location.href='organization-details.html'">Your Organization</button>
+            <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
+           
+            <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
+        </div>
+    </header>
+    <div class="posts-container">
+        <!-- Create Post Section -->
+        <div class="create-post">
+            <a href="create-post.html" class="create-post-btn">Create Post</a>
+        </div>
+
+        <!-- Posts Feed -->
+        <div class="posts-feed">
+            <!-- Example Post -->
+            <div class="post">
+                <div class="post-header">
+                    <img src="https://static.vecteezy.com/system/resources/previews/000/357/350/original/businessman-vector-icon.jpg" alt="user" class="user-pic">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="post-time">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>This is an example post with some content and an image.</p>
+                <div style="width: 380px;height: auto;"><img src="https://www.nicepng.com/png/detail/802-8029567_group-of-people-animated-png.png" alt="Post Image" class="post-image">
+                </div>    
+                </div>
+                <div class="post-actions">
+                    <button class="react-btn">Like (3)</button>
+                    <button class="comment-btn">Comment (2)</button>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <div class="comments">
+                        <p><strong>Jane Doe:</strong> Great post!</p>
+                        <p><strong>Mark Smith:</strong> Very informative!</p>
+                    </div>
+                    <input type="text" placeholder="Write a comment..." class="comment-input">
+                    <button class="comment-submit">Post Comment</button>
+                </div>
+            </div>
+
+            <!-- Another Example Post -->
+            <div class="post">
+                <div class="post-header">
+                    <img src="https://static.vecteezy.com/system/resources/previews/000/357/350/original/businessman-vector-icon.jpg" alt="user" class="user-pic">
+                    <div class="user-info">
+                        <p class="user-name">Alice Cooper</p>
+                        <p class="post-time">5 hours ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>This is another example post.</p>
+                </div>
+                <div class="post-actions">
+                    <button class="react-btn">Like (5)</button>
+                    <button class="comment-btn">Comment (3)</button>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <div class="comments">
+                        <p><strong>Bob Brown:</strong> Nice work!</p>
+                        <p><strong>Charlie Green:</strong> Well said!</p>
+                        <p><strong>David White:</strong> Interesting!</p>
+                    </div>
+                    <input type="text" placeholder="Write a comment..." class="comment-input">
+                    <button class="comment-submit">Post Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // You can add JS here to handle comment posting, reactions, etc.
+    </script>
+</body>
+</html>

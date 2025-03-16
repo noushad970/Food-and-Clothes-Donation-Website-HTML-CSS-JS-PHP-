@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Details</title>
+    <link rel="stylesheet" href="css/organization_detail.css">
+    <link rel="stylesheet" href="css/header_style.css">
+</head>
+<body>
+ <header class="header">
+        <div class="header-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
+           
+        </div>
+        <div class="header-right">
+            <button class="header-button" onclick="location.href='index.html'">Home</button>
+            <button class="header-button" onclick="location.href='profile.html'">Profile</button>
+            <button class="header-button" onclick="location.href='posts.html'">Posts</button>
+            <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
+            <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
+           
+            <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
+        </div>
+    </header>
+   
+        <div class="container">
+            <h2>Organization Details</h2>
+            <form>
+                <label for="orgName">Organization Name:</label>
+                <input type="text" id="orgName" name="orgName" required>
+    
+                <label for="orgDescription">Organization Description:</label>
+                <textarea id="orgDescription" name="orgDescription" required></textarea>
+    
+                <label for="orgImage">Upload Organization Image:</label>
+                <input type="file" id="orgImage" name="orgImage" accept="image/*">
+    
+                <label for="donationType">What do you accept as donations?</label>
+                <select id="donationType" name="donationType" required>
+                    <option value="food">Food</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="both">Both</option>
+                </select>
+    
+                <label for="contactNumber">Contact Number:</label>
+                <input type="tel" id="contactNumber" name="contactNumber" required>
+    
+                <button type="submit" class="submit-btn">Submit Details</button>
+            </form>
+        </div>
+  
+</body>
+</html>
