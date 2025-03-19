@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizations</title>
+    <title>Home</title>
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/header_style.css">
 </head>
@@ -12,15 +12,8 @@
     <!-- <header>
         <h1>Find an Organization</h1>
     </header> -->
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Organizations</title>
-        <link rel="stylesheet" href="home.css">
-    </head>
-    <body>
+    
+    
     
         <header class="header">
             <div class="header-left">
@@ -36,9 +29,12 @@
                 <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
                 <button class="header-button" onclick="location.href='contact.html'">Contact</button>
                 <button class="header-button" onclick="location.href='about.html'">About us</button>
-                <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
+                <button id="loginButton" class="header-button" style="display: none;"onclick="location.href='login.html'">Login/Signup</button>
+                <button id="logoutButton" class="header-button" style="display: none;" onclick="logout()">Logout</button>
             </div>
         </header>
+        <h2 id="welcomeMessage">Welcome!</h2>
+        <br>
     <div class="organization-container">
         
         <section class="organization-card">
@@ -78,7 +74,29 @@
         </section>
 
     </div>
+    <script>
+        
     
+        // Check if the user is logged in
+         fetch('php/session_check.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedIn) {
+                document.getElementById('welcomeMessage').innerText = "Welcome, " + data.username;
+                document.getElementById("logoutButton").style.display = "block";
+            }else{
+                document.getElementById("loginButton").style.display = "block";
+            }
+        }); 
+
+        function logout() {
+            fetch('php/logout.php')
+            .then(() => {
+                alert('Logged out successfully!');
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
     
     </body>
     </html>

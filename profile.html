@@ -11,78 +11,113 @@
     <header class="header">
         <div class="header-left">
             <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
-            
         </div>
         <div class="header-right">
             <button class="header-button" onclick="location.href='index.html'">Home</button>
-            <button class="header-button" onclick="location.href='posts.html'">Posts</button>
-            <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
-            <button class="header-button" onclick="location.href='organization-details.html'">Your Organization</button>
-            <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
-            <button class="header-button" onclick="location.href='contact.html'">Contact</button>
-            <button class="header-button" onclick="location.href='about.html'">About us</button>
-            <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
+            <button id="loginButton" class="header-button" style="display: none;" onclick="location.href='login.html'">Login/Signup</button>
         </div>
     </header>
+
     <div class="profile-container">
         <div class="profile-header">
             <h2>User Profile</h2>
         </div>
 
-        <div class="profile-content">
+        <!-- <div class="profile-content">
             <div class="profile-pic-container">
-                <img id="profilePic" src="default-avatar.png" alt="Profile Picture" class="profile-pic">
+                <img id="profilePic" src="uploads/default-avatar.png" alt="Profile Picture" class="profile-pic">
                 <label for="profilePicUpload" class="upload-btn">Upload Profile Picture</label>
-                <input type="file" id="profilePicUpload" accept="image/*" class="profile-pic-upload" onchange="previewProfilePic()">
-            </div>
+                <input type="file" id="profilePicUpload" accept="image/*" class="profile-pic-upload" onchange="uploadProfilePic()">
+            </div> -->
 
             <div class="user-details">
-                <p><strong>First Name:</strong> <span id="firstName">John</span></p>
-                <p><strong>Last Name:</strong> <span id="lastName">Doe</span></p>
-                <p><strong>Full Name:</strong> <span id="fullName">John Doe</span></p>
-                <p><strong>Username:</strong> <span id="username">john_doe</span></p>
-                <p><strong>Email:</strong> <span id="email">john.doe@example.com</span></p>
-                <p><strong>Age:</strong> <span id="age">30</span></p>
-                <p><strong>Occupation:</strong> <span id="occupation">Employee</span></p>
-                <p><strong>Donation Type:</strong> <span id="donationType">Food</span></p>
-
+                <p><strong>First Name:</strong> <input type="text" id="firstName"></p>
+                <p><strong>Last Name:</strong> <input type="text" id="lastName"></p>
+                <p><strong>Username:</strong> <span id="username"></span></p>
+                <p><strong>Email:</strong> <span id="email"></span></p>
+                <p><strong>Age:</strong> <input type="number" id="age"></p>
+                <p><strong>Occupation:</strong> <input type="text" id="occupation"></p>
+                <!-- <p><strong>Donation Type:</strong> <span id="donationType" ></p> -->
+                <p><strong>Donation Type:</strong> <span id="donationType"></span></p>
                 <h3>Address Details</h3>
-                <p><strong>Country:</strong> <span id="country">USA</span></p>
-                <p><strong>District:</strong> <span id="district">California</span></p>
-                <p><strong>Sub-district:</strong> <span id="subDistrict">Los Angeles</span></p>
-                <p><strong>Village/City:</strong> <span id="villageCity">Downtown</span></p>
+                <p><strong>Country:</strong> <input type="text" id="country"></p>
+                <p><strong>District:</strong> <input type="text" id="district"></p>
+                <p><strong>Sub-district:</strong> <input type="text" id="subDistrict"></p>
+                <p><strong>Village/City:</strong> <input type="text" id="villageCity"></p>
             </div>
         </div>
 
         <div class="profile-actions">
-            <button class="btn" onclick="editProfile()">Edit Profile</button>
+            <button class="btn" onclick="updateProfile()">Save Changes</button>
             <button class="btn" onclick="logout()">Logout</button>
         </div>
     </div>
 
     <script>
-        // Preview profile picture when uploaded
-        function previewProfilePic() {
-            const file = document.getElementById("profilePicUpload").files[0];
-            const reader = new FileReader();
-            
-            reader.onloadend = function () {
-                const profilePic = document.getElementById("profilePic");
-                profilePic.src = reader.result;
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('php/get_profile.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('firstName').value = data.firstName;
+                        document.getElementById('lastName').value = data.lastName;
+                        document.getElementById('username').textContent = data.username;
+                        document.getElementById('email').textContent = data.email;
+                        document.getElementById('age').value = data.age;
+                        document.getElementById('occupation').value = data.occupation;
+                        document.getElementById('donationType').textContent = data.donationType;
+                        document.getElementById('country').value = data.country;
+                        document.getElementById('district').value = data.district;
+                        document.getElementById('subDistrict').value = data.subDistrict;
+                        document.getElementById('villageCity').value = data.villageCity;
+                        document.getElementById('profilePic').src = data.profile_pic || 'uploads/default-avatar.png';
+                    }
+                });
+        });
 
-            if (file) {
-                reader.readAsDataURL(file);
-            }
+        function updateProfile() {
+            let formData = new FormData();
+            formData.append('first_name', document.getElementById('firstName').value);
+            formData.append('last_name', document.getElementById('lastName').value);
+            formData.append('age', document.getElementById('age').value);
+            formData.append('occupation', document.getElementById('occupation').value);
+            formData.append('donation_type', document.getElementById('donationType').value);
+            formData.append('country', document.getElementById('country').value);
+            formData.append('district', document.getElementById('district').value);
+            formData.append('sub_district', document.getElementById('subDistrict').value);
+            formData.append('village_city', document.getElementById('villageCity').value);
+
+            fetch('php/update_profile.php', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            });
         }
 
-        // Placeholder functions for editing profile and logout
-        function editProfile() {
-            alert("Edit Profile functionality is not implemented yet.");
+        function uploadProfilePic() {
+            let fileInput = document.getElementById('profilePicUpload');
+            let formData = new FormData();
+            formData.append('profile_pic', fileInput.files[0]);
+
+            fetch('php/upload_profile_pic.php', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('profilePic').src = data.profile_pic;
+                }
+                alert(data.message);
+            });
         }
 
         function logout() {
-            alert("Logout functionality is not implemented yet.");
+            fetch('php/logout.php').then(() => {
+                alert('Logged out successfully!');
+                window.location.href = 'login.html';
+            });
         }
     </script>
 </body>

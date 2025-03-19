@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,47 +8,129 @@
     <link rel="stylesheet" href="css/header_style.css">
 </head>
 <body>
- <header class="header">
-        <div class="header-left">
-            <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
-           
-        </div>
-        <div class="header-right">
-            <button class="header-button" onclick="location.href='index.html'">Home</button>
-            <button class="header-button" onclick="location.href='profile.html'">Profile</button>
-            <button class="header-button" onclick="location.href='posts.html'">Posts</button>
-            <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
-            <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
-           
-            <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
-        </div>
-    </header>
-   
-        <div class="container">
-            <h2>Organization Details</h2>
-            <form>
-                <label for="orgName">Organization Name:</label>
-                <input type="text" id="orgName" name="orgName" required>
-    
-                <label for="orgDescription">Organization Description:</label>
-                <textarea id="orgDescription" name="orgDescription" required></textarea>
-    
-                <label for="orgImage">Upload Organization Image:</label>
-                <input type="file" id="orgImage" name="orgImage" accept="image/*">
-    
-                <label for="donationType">What do you accept as donations?</label>
-                <select id="donationType" name="donationType" required>
-                    <option value="food">Food</option>
-                    <option value="clothes">Clothes</option>
-                    <option value="both">Both</option>
-                </select>
-    
-                <label for="contactNumber">Contact Number:</label>
-                <input type="tel" id="contactNumber" name="contactNumber" required>
-    
-                <button type="submit" class="submit-btn">Submit Details</button>
-            </form>
-        </div>
-  
+<header class="header">
+    <div class="header-left">
+        <img src="https://cdn-icons-png.flaticon.com/512/7500/7500415.png" alt="Logo">
+    </div>
+    <div class="header-right">
+        <button class="header-button" onclick="location.href='index.html'">Home</button>
+        <button class="header-button" onclick="location.href='profile.html'">Profile</button>
+        <button class="header-button" onclick="location.href='posts.html'">Posts</button>
+        <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
+        <button class="header-button" onclick="location.href='organizations.html'">Organizations</button>
+    </div>
+</header>
+
+<div class="container" id="orgContainer">
+    <h2>Organization Details</h2>
+    <p id="errorMessage" style="color: red; display: none;"></p>
+
+    <form id="organizationForm" enctype="multipart/form-data">
+        <label for="orgName">Organization Name:</label>
+        <input type="text" id="orgName" name="orgName" required>
+
+        <label for="orgDescription">Organization Description:</label>
+        <textarea id="orgDescription" name="orgDescription" required></textarea>
+
+        <label for="orgImage">Upload Organization Image:</label>
+        <input type="file" id="orgImage" name="orgImage" accept="image/*">
+
+        <label for="donationType">What do you accept as donations?</label>
+        <select id="donationType" name="donationType" required>
+            <option value="food">Food</option>
+            <option value="clothes">Clothes</option>
+            <option value="both">Both</option>
+        </select>
+
+        <label for="contactNumber">Contact Number:</label>
+        <input type="tel" id="contactNumber" name="contactNumber" required>
+
+        <button type="submit" class="submit-btn">Submit Details</button>
+    </form>
+</div>
+
+<script>
+    // Fetch user role to check if they are an organization or donator
+    fetch("php/check_user_role.php")
+    .then(response => response.json())
+    .then(data => {
+        if (!data.isOrganization) {
+            document.getElementById("orgContainer").innerHTML = "<h2>You are a Donator, You cannot access this page</h2>";
+        } else {
+            fetchOrganizationDetails();
+        }
+    });
+
+    function fetchOrganizationDetails() {
+        fetch("php/fetch_organization.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("orgName").value = data.orgName;
+                document.getElementById("orgDescription").value = data.orgDescription;
+                document.getElementById("donationType").value = data.donationType;
+                document.getElementById("contactNumber").value = data.contactNumber;
+            }
+        });
+    }
+
+    document.getElementById("organizationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        let formData = new FormData(this);
+
+        fetch("php/save_organization.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Organization details saved successfully!");
+            } else {
+                alert("Error: " + data.error);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <?php include 'php/check_organization_access.php'; ?>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Organization Details</title>
+     <link rel="stylesheet" href="css/organization_detail.css">
+ </head>
+ <body>
+     <header>
+         <h2>Organization Details</h2>
+     </header>
+     
+     <div class="container">
+         <form action="php/create_organization.php" method="POST">
+             <label for="orgName">Organization Name:</label>
+             <input type="text" id="orgName" name="orgName" required>
+ 
+             <label for="orgDescription">Organization Description:</label>
+             <textarea id="orgDescription" name="orgDescription" required></textarea>
+ 
+             <label for="donationType">What do you accept as donations?</label>
+             <select id="donationType" name="donationType" required>
+                 <option value="food">Food</option>
+                 <option value="clothes">Clothes</option>
+                 <option value="both">Both</option>
+             </select>
+ 
+             <label for="contactNumber">Contact Number:</label>
+             <input type="tel" id="contactNumber" name="contactNumber" required>
+ 
+             <button type="submit" class="submit-btn">Create Organization</button>
+         </form>
+     </div>
+ </body>
+ </html>
+ 

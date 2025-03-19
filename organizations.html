@@ -6,6 +6,7 @@
     <title>Organizations</title>
     <link rel="stylesheet" href="css/organization.css">
 </head>
+
 <body>
 
     <!-- <header>
@@ -35,10 +36,9 @@
                 <button class="header-button" onclick="location.href='posts.html'">Posts</button>
                 <button class="header-button" onclick="location.href='create-post.html'">Create Post</button>
                 <button class="header-button" onclick="location.href='organization-details.html'">Your Organization</button>
-                <button class="header-button" onclick="location.href='login.html'">Login/Signup</button>
-            </div>
+                </div>
         </header>
-    <div class="organization-container">
+    <!-- <div class="organization-container">
         
         <section class="organization-card">
             <img src="https://islamhashtag.com/wp-content/uploads/2023/04/image-2.png" alt="Organization Image">
@@ -77,8 +77,57 @@
         </section>
 
     </div>
-    
-    
+     -->
+     <h1>Organization Details</h1>
+
+    <!-- Displaying the organization data -->
+    <div id="organizationDetails">
+        <p>Loading data...</p>
+    </div>
+
+    <script>
+        // Function to fetch data from fetch_data.php
+        fetch('php/show_organization.php')
+            .then(response => response.json())
+            .then(data => {
+                // Get the element to display the data
+                const orgDetailsDiv = document.getElementById('organizationDetails');
+
+                if (data) {
+                    // Structure the data into HTML
+                    orgDetailsDiv.innerHTML = `
+                        <table>
+                            <tr>
+                                <th>Organization Name</th>
+                                <td>${data.orgName}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>${data.orgDescription}</td>
+                            </tr>
+                            <tr>
+                                <th>Donation Type</th>
+                                <td>${data.donationType}</td>
+                            </tr>
+                            <tr>
+                                <th>Contact Number</th>
+                                <td>${data.contactNumber}</td>
+                            </tr>
+                            <tr>
+                                <th>Image</th>
+                                <td><img src="${data.orgImage}" alt="Organization Image"></td>
+                            </tr>
+                        </table>
+                    `;
+                } else {
+                    orgDetailsDiv.innerHTML = `<p>No data found for this user.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('organizationdetails').innerHTML = `<p>Error loading data.</p>`;
+            });
+    </script>
     </body>
     </html>
     
