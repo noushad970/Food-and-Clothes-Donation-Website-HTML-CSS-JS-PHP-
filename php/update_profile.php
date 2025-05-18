@@ -1,19 +1,30 @@
 <?php
 session_start();
-require 'db_connect.php';
+require 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "User not logged in"]);
-    exit();
+    echo "Unauthorized";
+    exit;
 }
 
 $user_id = $_SESSION['user_id'];
-$query = "UPDATE users SET firstName=?, lastName=?, age=?, occupation=?, donationType=?, country=?, district=?, subDistrict=?, villageCity=? WHERE id=?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("ssissssssi", $_POST['first_name'], $_POST['last_name'], $_POST['age'], $_POST['occupation'], $_POST['donation_type'], $_POST['country'], $_POST['district'], $_POST['sub_district'], $_POST['village_city'], $user_id);
-$stmt->execute();
+$full_name = $_POST['full_name'];
+$username = $_POST['username'];
+$address = $_POST['address'];
+$dob = $_POST['dob'];
 
-echo json_encode(["success" => true, "message" => "Profile updated successfully"]);
+$org_name = isset($_POST['org_name']) ? $_POST['org_name'] : null;
+$org_location = isset($_POST['org_location']) ? $_POST['org_location'] : null;
+$org_phone = isset($_POST['org_phone']) ? $_POST['org_phone'] : null;
+
+$stmt = $conn->prepare("UPDATE users SET full_name=?, username=?, address=?, dob=?, org_name=?, org_location=?, org_phone=? WHERE id=?");
+$stmt->bind_param("sssssssi", $full_name, $username, $address, $dob, $org_name, $org_location, $org_phone, $user_id);
+
+if ($stmt->execute()) {
+    header("Location: ../pages/profile.html");
+} else {
+    echo "Update failed.";
+}
+
 $stmt->close();
 $conn->close();
-?>

@@ -1,160 +1,108 @@
-/* General Styles for Profile Page */
 body {
-    
-    font-family: 'Arial', sans-serif;
-     
-    margin: 0;
-   
-    padding: 0;
-    background: linear-gradient(45deg, #6a11cb, #2575fc);
-    background-size: 400% 400%;
-    animation: backgroundAnimation 10s ease infinite;
-}
+    font-family: Arial, sans-serif;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: #f2f2f2;
+  }
+  
+  .profile-container {
+    width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .profile-container h2 {
+    text-align: center;
+  }
+  
+  .profile-container form input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  
 
-.profile-container {
-    width: 80%;
-    max-width: 1000px;
+  /* Common Post Styling */
+.post {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     margin: 20px auto;
     padding: 20px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1.5s ease-out;
-}
-
-.profile-header h2 {
-    text-align: center;
+    max-width: 600px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #4caf50;
+  }
+  
+  .post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post h4 {
+    margin: 0 0 10px;
     color: #333;
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    font-weight: bold;
-    text-transform: uppercase;
-    animation: slideInFromTop 1s ease-out;
-}
-
-/* Profile Picture Upload Styles */
-.profile-pic-container {
-    text-align: center;
-    margin-bottom: 20px;
-    animation: fadeInUp 1s ease-out;
-}
-
-.profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    transition: transform 0.3s ease-in-out;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.profile-pic:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.upload-btn {
-    display: inline-block;
-    margin-top: 10px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.upload-btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-.profile-pic-upload {
-    display: none;
-}
-
-/* User Details */
-.user-details {
-    font-size: 1.1em;
-    margin-top: 20px;
-    animation: fadeInUp 1.5s ease-out;
-}
-
-.user-details p {
-    margin: 15px 0;
     font-size: 1.2em;
-}
-
-.user-details strong {
-    color: #333;
-    font-weight: bold;
-}
-
-.profile-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    animation: fadeInUp 1s ease-out;
-}
-
-.profile-actions .btn {
-    background-color: #4CAF50;
+    font-weight: 600;
+  }
+  
+  .post p {
+    font-size: 1em;
+    color: #444;
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+  
+  .post small {
+    display: block;
+    text-align: right;
+    color: #888;
+    font-size: 0.85em;
+  }
+  
+  .post form {
+    text-align: right;
+    margin-top: 10px;
+  }
+  
+  .post form button {
+    background: #e53935;
     color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    margin: 0 15px;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.profile-actions .btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-/* Animation Effects */
-@keyframes backgroundAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes slideInFromTop {
-    0% {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeInUp {
-    0% {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
+    transition: background 0.2s ease;
+  }
+  
+  .post form button:hover {
+    background: #c62828;
+  }
+  
+  /* Container (optional) */
+  .newsfeed-container,
+  .profile-container {
+    padding: 40px 20px;
+    background: #f5f7fa;
+    min-height: 100vh;
+  }
+  

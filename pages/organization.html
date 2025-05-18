@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Organizations</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 50px;
+      overflow-y:scroll;
+      overflow-x: hidden;
+      background: #f0f0f0;
+    }
+    .search-box {
+      margin-bottom: 15px;
+    }
+    .search-box input {
+      padding: 8px;
+      width: 250px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .search-box button {
+      padding: 8px 12px;
+      margin-left: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    .org-card {
+      background: white;
+      margin: 15px 0;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .pagination button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+
+  <link rel="stylesheet" href="../css/header.css" />
+</head>
+<body>
+    <header>
+        <section style="background:rgb(0, 153, 255)">
+            <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <a href="home.html">🏠 Home</a>
+            <a href="create-post.html">Create a Post</a>
+            <a href="posts.html">Posts</a>
+            <a href="profile.html">Profile</a>
+            <a href="about.html">👤 About us</a>
+            <!-- Add more buttons here -->
+          </div>
+        </section>
+    </header>
+  <h2>Registered Organizations</h2>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by address...">
+    <button onclick="searchOrganizations()">Search</button>
+  </div>
+
+  <div id="orgList"></div>
+
+  <div class="pagination">
+    <button onclick="loadNextPage()">Next Page</button>
+  </div>
+
+  <script>
+    let currentPage = 1;
+    let currentSearch = "";
+
+    function fetchOrganizations(page = 1, search = "") {
+      fetch(`../php/organization.php?page=${page}&search=${encodeURIComponent(search)}`)
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('orgList');
+          if (page === 1) list.innerHTML = ''; // Clear on new search
+          if (data.length === 0 && page === 1) {
+            list.innerHTML = "<p>No organizations found.</p>";
+          } else {
+            data.forEach(org => {
+              const div = document.createElement('div');
+              div.className = "org-card";
+              div.innerHTML = `
+                <h3>${org.org_name}</h3>
+                <p><strong>Address:</strong> ${org.org_location}</p>
+                <p><strong>Phone:</strong> ${org.org_phone}</p>
+              `;
+              list.appendChild(div);
+            });
+          }
+        });
+    }
+
+    function searchOrganizations() {
+      currentSearch = document.getElementById("searchInput").value;
+      currentPage = 1;
+      fetchOrganizations(currentPage, currentSearch);
+    }
+
+    function loadNextPage() {
+      currentPage++;
+      fetchOrganizations(currentPage, currentSearch);
+    }
+
+    // Load initial data
+    fetchOrganizations();
+  </script>
+
+</body>
+</html>

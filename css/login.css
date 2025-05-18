@@ -6,6 +6,8 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
+    overflow-y: hidden;
+    overflow-x: hidden;
     align-items: center;
     background: linear-gradient(to right, #6a11cb, #2575fc);
     animation: fadeIn 1s ease-in-out;

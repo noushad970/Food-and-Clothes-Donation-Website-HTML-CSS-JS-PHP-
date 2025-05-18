@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile</title>
+  <link rel="stylesheet" href="../css/profile.css" />
+  <style>
+    /* Common Post Styling */
+    .post {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 600px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      border-left: 5px solid #4caf50;
+    }
+
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .post h4 {
+      margin: 0 0 10px;
+      color: #333;
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+
+    .post p {
+      font-size: 1em;
+      color: #444;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+
+    .post small {
+      display: block;
+      text-align: right;
+      color: #888;
+      font-size: 0.85em;
+    }
+
+    .post form {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .post form button {
+      background: #e53935;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .post form button:hover {
+      background: #c62828;
+    }
+
+  </style>
+  <link rel="stylesheet" href="../css/header.css" />
+</head>
+<body>
+    <header>
+        <section style="background:rgb(0, 153, 255)">
+            <!-- Top Navigation Bar -->
+        <div class="top-navbar">
+            <a href="home.html">🏠 Home</a>
+            <a href="create-post.html">Create a Post</a>
+            <a href="posts.html">Posts</a>
+            <a href="organization.html">Organization</a>
+            <a href="about.html">👤 About us</a>
+            <!-- Add more buttons here -->
+          </div>
+        </section>
+    </header>
+  <div class="profile-container">
+    <h2>Your Profile</h2>
+    <form id="profileForm" method="POST" action="../php/update_profile.php">
+<div>
+      <label for="full_name">Full Name</label>
+      <input type="text" name="full_name" id="full_name" required />
+</div>
+<div>
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" required />
+    </div>
+    <div>
+      <label for="email">Email (cannot be changed)</label>
+      <input type="email" name="email" id="email" readonly />
+    </div>
+    <div>
+      <label for="address">Address</label>
+      <input type="text" name="address" id="address" required />
+    </div>
+    <div>
+      <label for="dob">Date of Birth</label>
+      <input type="date" name="dob" id="dob" required />
+    </div>
+    <div>
+      <label for="user_type">User Type</label>
+      <input type="text" name="user_type" id="user_type" readonly />
+    </div>
+    <div>
+      <div id="organizationFields" style="display: none;">
+        <label for="org_name">Organization Name</label>
+        <input type="text" name="org_name" id="org_name" />
+    </div>
+    <div>
+        <label for="org_location">Organization Location</label>
+        <input type="text" name="org_location" id="org_location" />
+    </div>
+    <div>
+        <label for="org_phone">Organization Phone</label>
+        <input type="text" name="org_phone" id="org_phone" />
+    </div>
+      </div>
+
+      <button type="submit">Update Profile</button>
+    </form>
+
+  </div>
+
+  <script>
+    fetch("../php/get_profile.php")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const user = data.user;
+          document.getElementById("full_name").value = user.full_name;
+          document.getElementById("username").value = user.username;
+          document.getElementById("email").value = user.email;
+          document.getElementById("address").value = user.address;
+          document.getElementById("dob").value = user.dob;
+          document.getElementById("user_type").value = user.user_type;
+
+          if (user.user_type === 'organization') {
+            document.getElementById("organizationFields").style.display = "block";
+            document.getElementById("org_name").value = user.org_name;
+            document.getElementById("org_location").value = user.org_location;
+            document.getElementById("org_phone").value = user.org_phone;
+          }
+        } else {
+          alert("Error loading profile");
+        }
+      });
+  </script>
+
+  <div class="profile-container">
+    <h2>Your Posts</h2>
+    <div id="userPosts" class="post"></div>
+  </div>
+
+  <script>
+    fetch("../php/fetch_user_posts.php")
+      .then(res => res.json())
+      .then(posts => {
+        const container = document.getElementById("userPosts");
+        posts.forEach(post => {
+          const div = document.createElement("div");
+          div.className = "post";
+          div.innerHTML = `
+            <h4>${post.username}</h4>
+            <p>${post.content}</p>
+            <small>${new Date(post.created_at).toLocaleString()}</small>
+            <form method="POST" action="../php/delete_post.php">
+              <input type="hidden" name="post_id" value="${post.id}" />
+              <button type="submit">Delete</button>
+            </form>
+          `;
+          container.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>

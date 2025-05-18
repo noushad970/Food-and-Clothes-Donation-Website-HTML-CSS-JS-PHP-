@@ -1,36 +1,32 @@
 <?php
+require 'db.php';
 session_start();
-require 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usernameOrEmail = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Check if the user exists by username or email
-    $query = "SELECT * FROM users WHERE username=? OR email=?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        
-        // Verify the password
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['username'] = $row['username'];
-            
-            echo "<script>alert('Login Successful!'); window.location.href='../index.html';</script>";
+    $stmt->store_result();
+
+    if ($stmt->num_rows == 1) {
+        $stmt->bind_result($id, $hashed_password);
+        $stmt->fetch();
+        if (password_verify($password, $hashed_password)) {
+            $_SESSION['user_id'] = $id;
+            header("Location: ../pages/home.html"); // Redirect to home page
         } else {
-            echo "<script>alert('Wrong password!'); window.location.href='../login.html';</script>";
+            echo "Invalid password.";
         }
     } else {
-        echo "<script>alert('User not found!'); window.location.href='../login.html';</script>";
+        echo "No user found with that email.";
     }
 
     $stmt->close();
+    $conn->close();
+} else {
+    echo "Invalid request.";
 }
-
-$conn->close();
 ?>
