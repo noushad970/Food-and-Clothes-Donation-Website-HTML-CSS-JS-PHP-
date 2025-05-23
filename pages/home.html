@@ -70,7 +70,10 @@
 
 <section style="background:rgb(0, 153, 255)">
     <!-- Top Navigation Bar -->
+    
 <div class="top-navbar">
+  
+    <img id="profilePic" src="" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;">
     <a href="home.html">🏠 Home</a>
     <a href="profile.html">👤 Profile</a>
     <a href="create-post.html">Create a Post</a>
@@ -80,7 +83,8 @@
     <!-- Add more buttons here -->
   </div>
 </section>
-  
+
+
 
   <div class="navbar">
     <div class="nav-left">
@@ -95,8 +99,11 @@
     <h3>Welcome, <span id="username">Guest</span>!</h3>
     <p>This is your homepage after login. You can create or view posts here.</p>
   </div>
-
-  <!-- home newsfeed -->
+<!-- show profile pic in home -->
+<div style="position: absolute; top: 10px; right: 10px;">
+ 
+</div> 
+<!-- home newsfeed -->
   <div class="newsfeed-container">
     <h2>Newsfeed</h2>
     <div id="postsContainer" class="post"></div>
@@ -104,5 +111,13 @@
 
 
   <script src="../js/home.js"></script>
+  <script>
+    fetch('../php/get_user_data.php')
+      .then(res => res.json())
+      .then(data => {
+        const pic = data.profile_picture ? `../uploads/${data.profile_picture}` : '../assets/default.jpg';
+        document.getElementById('profilePic').src = pic;
+      });
+  </script>
 </body>
 </html>

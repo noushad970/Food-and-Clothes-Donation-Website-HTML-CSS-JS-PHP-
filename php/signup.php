@@ -1,6 +1,7 @@
 <?php
 require 'db.php';
 
+// user info
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $full_name = $_POST['full_name'];
     $username = $_POST['username'];
@@ -9,14 +10,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address = $_POST['address'];
     $dob = $_POST['dob'];
     $user_type = $_POST['user_type'];
-
+// organization info
     $org_name = $org_location = $org_phone = null;
     if ($user_type === 'organization') {
         $org_name = $_POST['org_name'];
         $org_location = $_POST['org_location'];
         $org_phone = $_POST['org_phone'];
     }
-
+// profile picture info
+    $profile_picture = null;
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) {
+        $upload_dir = "../uploads/";
+        if (!file_exists($upload_dir)) mkdir($upload_dir);
+        $filename = uniqid() . "_" . basename($_FILES["profile_picture"]["name"]);
+        $target_file = $upload_dir . $filename;
+        if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+            $profile_picture = $filename;
+        }
+    }
     // Check if email exists
     $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -29,9 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert into users table
-    $stmt = $conn->prepare("INSERT INTO users (full_name, username, email, password, address, dob, user_type, org_name, org_location, org_phone)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssss", $full_name, $username, $email, $password, $address, $dob, $user_type, $org_name, $org_location, $org_phone);
+    $stmt = $conn->prepare("INSERT INTO users (full_name, username, email, password, address, dob, user_type, org_name, org_location, org_phone, profile_picture)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssssss", $full_name, $username, $email, $password, $address, $dob, $user_type, $org_name, $org_location, $org_phone, $profile_picture);
 
     if ($stmt->execute()) {
         $user_id = $stmt->insert_id;

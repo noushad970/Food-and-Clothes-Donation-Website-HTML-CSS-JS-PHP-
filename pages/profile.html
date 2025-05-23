@@ -70,6 +70,7 @@
         <section style="background:rgb(0, 153, 255)">
             <!-- Top Navigation Bar -->
         <div class="top-navbar">
+          <img id="profilePic" src="" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;">
             <a href="home.html">🏠 Home</a>
             <a href="create-post.html">Create a Post</a>
             <a href="posts.html">Posts</a>
@@ -81,6 +82,13 @@
     </header>
   <div class="profile-container">
     <h2>Your Profile</h2>
+
+    <!-- profile picture update section -->
+    <form action="../php/update_profile_picture.php" method="POST" enctype="multipart/form-data">
+      <input type="file" name="new_profile_picture" accept="image/*" required />
+      <button type="submit">Update Picture</button>
+    </form>
+    <!-- profile update section -->
     <form id="profileForm" method="POST" action="../php/update_profile.php">
 <div>
       <label for="full_name">Full Name</label>
@@ -109,15 +117,19 @@
     <div>
       <div id="organizationFields" style="display: none;">
         <label for="org_name">Organization Name</label>
-        <input type="text" name="org_name" id="org_name" />
+        <!-- <input type="text" name="org_name" id="org_name" /> -->
+        <input type="text" name="org_name" id="org_name" readonly />
     </div>
     <div>
         <label for="org_location">Organization Location</label>
         <input type="text" name="org_location" id="org_location" />
+        <input type="text" name="org_location" id="org_location" readonly />
     </div>
     <div>
+      <!-- organization update section -->
         <label for="org_phone">Organization Phone</label>
-        <input type="text" name="org_phone" id="org_phone" />
+        <!-- <input type="text" name="org_phone" id="org_phone" /> -->
+        <input type="text" name="org_phone" id="org_phone" readonly />
     </div>
       </div>
 
@@ -175,6 +187,14 @@
           `;
           container.appendChild(div);
         });
+      });
+  </script>
+  <script>
+    fetch('../php/get_user_data.php')
+      .then(res => res.json())
+      .then(data => {
+        const pic = data.profile_picture ? `../uploads/${data.profile_picture}` : '../assets/default.jpg';
+        document.getElementById('profilePic').src = pic;
       });
   </script>
 </body>

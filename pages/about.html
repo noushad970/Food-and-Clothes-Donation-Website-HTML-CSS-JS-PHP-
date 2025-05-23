@@ -11,6 +11,7 @@
         <section style="background:rgb(0, 153, 255)">
             <!-- Top Navigation Bar -->
         <div class="top-navbar">
+            <img id="profilePic" src="" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;">
             <a href="home.html">🏠 Home</a>
             <a href="profile.html">👤 Profile</a>
             <a href="create-post.html">Create a Post</a>
@@ -24,5 +25,13 @@
         <h2>About Our Platform</h2>
         <p>We aim to connect people with excess food to organizations that help the needy.</p>
     </div>
+    <script>
+        fetch('../php/get_user_data.php')
+          .then(res => res.json())
+          .then(data => {
+            const pic = data.profile_picture ? `../uploads/${data.profile_picture}` : '../assets/default.jpg';
+            document.getElementById('profilePic').src = pic;
+          });
+      </script>
 </body>
 </html>
