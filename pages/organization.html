@@ -6,6 +6,7 @@
 
   <link rel="stylesheet" href="../css/organizations.css" />
   <link rel="stylesheet" href="../css/header.css" />
+  <link rel="stylesheet" href="../css/message.css" />
   
 </head>
 <body>
@@ -23,6 +24,15 @@
           </div>
         </section>
     </header>
+
+    
+
+
+
+
+
+
+
   <h2>Registered Organizations</h2>
 
   <div class="search-box">
@@ -36,6 +46,9 @@
     <button onclick="loadNextPage()">Next Page</button>
   </div>
 
+  
+
+  <script src="../js/message.js"></script>
   <script>
     let currentPage = 1;
     let currentSearch = "";
@@ -63,14 +76,18 @@
                   <p><strong>Phone:</strong> ${org.org_phone}</p>
                 </div>
               `;
-            
+
+          const message_us=`<button class="messageOrgBtn" data-receiver-id="<?= $organization['user_id'] ?>">
+              💬 Message Us
+          </button>
+          `;
               const image = `
                 <div style="width: 400px; height: 250px; overflow: hidden; border-radius: 10px; margin-left: 20px;">
                   <img src="../uploads/${org.org_image}" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
               `;
             
-              div.innerHTML = info + image;
+              div.innerHTML = info +message_us+ image;
               list.appendChild(div);
             });
             

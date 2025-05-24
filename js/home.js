@@ -42,6 +42,7 @@ fetch('../php/get_user.php')
         const container = document.getElementById("postsContainer");
         posts.forEach(post => {
           const div = document.createElement("div");
+          console.log('Checking ');
           div.className = "post";
           div.innerHTML = `
             <h4>${post.username}</h4>
@@ -51,5 +52,16 @@ fetch('../php/get_user.php')
           container.appendChild(div);
         });
       });
+
+      function checkUnread() {
+        fetch("php/check_unread.php")
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("messageDot").style.display = data.unread > 0 ? "inline-block" : "none";
+          });
+      }
+      checkUnread();
+      setInterval(checkUnread, 10000);
+      
 
      

@@ -106,3 +106,73 @@ body {
     padding: 20px;
     border-radius: 8px;
   }
+
+  /* Common Post Styling */
+.post {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #4caf50;
+  }
+
+  .post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .post h4 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+
+  .post p {
+    font-size: 1em;
+    color: #444;
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+
+  .post small {
+    display: block;
+    text-align: right;
+    color: #888;
+    font-size: 0.85em;
+  }
+
+  .post form {
+    text-align: right;
+    margin-top: 10px;
+  }
+
+  .post form button {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .post form button:hover {
+    background: #c62828;
+  }
+
+  .red-dot {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  
+
