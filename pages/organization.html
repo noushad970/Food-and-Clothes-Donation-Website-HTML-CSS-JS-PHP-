@@ -3,58 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Organizations</title>
-  <style>
-    body {
-      font-family: Arial;
-      padding: 50px;
-      overflow-y:scroll;
-      overflow-x: hidden;
-      background: #f0f0f0;
-    }
-    .search-box {
-      margin-bottom: 15px;
-    }
-    .search-box input {
-      padding: 8px;
-      width: 250px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .search-box button {
-      padding: 8px 12px;
-      margin-left: 10px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
-    .org-card {
-      background: white;
-      margin: 15px 0;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      animation: fadeIn 0.5s ease-in;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    .pagination {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .pagination button {
-      padding: 10px 20px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
 
+  <link rel="stylesheet" href="../css/organizations.css" />
   <link rel="stylesheet" href="../css/header.css" />
+  
 </head>
 <body>
     <header>
@@ -100,13 +52,28 @@
             data.forEach(org => {
               const div = document.createElement('div');
               div.className = "org-card";
-              div.innerHTML = `
-                <h3>${org.org_name}</h3>
-                <p><strong>Address:</strong> ${org.org_location}</p>
-                <p><strong>Phone:</strong> ${org.org_phone}</p>
+              div.style.display = "flex";
+              div.style.justifyContent = "space-between";
+              div.style.alignItems = "center";
+            
+              const info = `
+                <div style="flex: 1;">
+                  <h3>${org.org_name}</h3>
+                  <p><strong>Address:</strong> ${org.org_location}</p>
+                  <p><strong>Phone:</strong> ${org.org_phone}</p>
+                </div>
               `;
+            
+              const image = `
+                <div style="width: 400px; height: 250px; overflow: hidden; border-radius: 10px; margin-left: 20px;">
+                  <img src="../uploads/${org.org_image}" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+              `;
+            
+              div.innerHTML = info + image;
               list.appendChild(div);
             });
+            
           }
         });
     }

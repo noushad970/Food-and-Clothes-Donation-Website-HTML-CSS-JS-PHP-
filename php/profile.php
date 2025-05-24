@@ -19,3 +19,4 @@ echo "<p><strong>Email:</strong> {$user['gmail']}</p>";
 echo "<p><strong>Address:</strong> {$user['address']}</p>";
 echo "<p><strong>Date of Birth:</strong> {$user['dob']}</p>";
 ?>
+

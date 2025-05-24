@@ -70,8 +70,10 @@
         <section style="background:rgb(0, 153, 255)">
             <!-- Top Navigation Bar -->
         <div class="top-navbar">
-          <img id="profilePic" src="" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;">
-            <a href="home.html">🏠 Home</a>
+          <a href="profile.html">
+            <img id="profilePic" src="" alt="Profile" style="width: 50px; height: 50px; border-radius: 50%;">
+        </a>
+          <a href="home.html">🏠 Home</a>
             <a href="create-post.html">Create a Post</a>
             <a href="posts.html">Posts</a>
             <a href="organization.html">Organization</a>
@@ -84,9 +86,10 @@
     <h2>Your Profile</h2>
 
     <!-- profile picture update section -->
+    <dir>Profile Picture</dir>
     <form action="../php/update_profile_picture.php" method="POST" enctype="multipart/form-data">
       <input type="file" name="new_profile_picture" accept="image/*" required />
-      <button type="submit">Update Picture</button>
+      <button type="submit">Update Profile Picture</button>
     </form>
     <!-- profile update section -->
     <form id="profileForm" method="POST" action="../php/update_profile.php">
@@ -110,10 +113,16 @@
       <label for="dob">Date of Birth</label>
       <input type="date" name="dob" id="dob" required />
     </div>
+
+    <button type="submit">Update Profile</button>
+    
+    
+    
     <div>
       <label for="user_type">User Type</label>
       <input type="text" name="user_type" id="user_type" readonly />
     </div>
+    
     <div>
       <div id="organizationFields" style="display: none;">
         <label for="org_name">Organization Name</label>
@@ -122,7 +131,7 @@
     </div>
     <div>
         <label for="org_location">Organization Location</label>
-        <input type="text" name="org_location" id="org_location" />
+        <!-- <input type="text" name="org_location" id="org_location" /> -->
         <input type="text" name="org_location" id="org_location" readonly />
     </div>
     <div>
@@ -132,10 +141,12 @@
         <input type="text" name="org_phone" id="org_phone" readonly />
     </div>
       </div>
-
-      <button type="submit">Update Profile</button>
+<!-- end of profile details and organization details -->
     </form>
-
+    <form action="../php/update_org_image.php" method="POST" enctype="multipart/form-data">
+      <input type="file" name="new_org_image" accept="image/*" required />
+      <button type="submit">Update Organization Picture</button>
+    </form>
   </div>
 
   <script>
@@ -156,6 +167,7 @@
             document.getElementById("org_name").value = user.org_name;
             document.getElementById("org_location").value = user.org_location;
             document.getElementById("org_phone").value = user.org_phone;
+            document.getElementById("org_image").value = user.org_image;
           }
         } else {
           alert("Error loading profile");

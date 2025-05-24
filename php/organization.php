@@ -6,7 +6,19 @@ $search = isset($_GET['search']) ? "%" . $_GET['search'] . "%" : "%";
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
-$stmt = $conn->prepare("SELECT org_name, org_location, org_phone FROM organization WHERE org_location LIKE ? LIMIT ? OFFSET ?");
+// JOIN users table using organization.user_id = users.id
+$stmt = $conn->prepare("
+    SELECT 
+        organization.org_name, 
+        organization.org_location, 
+        organization.org_phone,
+        users.org_image
+    FROM organization
+    JOIN users ON organization.user_id = users.id
+    WHERE organization.org_location LIKE ?
+    LIMIT ? OFFSET ?
+");
+
 $stmt->bind_param("sii", $search, $limit, $offset);
 $stmt->execute();
 
