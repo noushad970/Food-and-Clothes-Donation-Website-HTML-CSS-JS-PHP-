@@ -48,7 +48,7 @@
 
   
 
-  <script src="../js/message.js"></script>
+  <script src="../js/messages.js"></script>
   <script>
     let currentPage = 1;
     let currentSearch = "";
@@ -63,38 +63,40 @@
             list.innerHTML = "<p>No organizations found.</p>";
           } else {
             data.forEach(org => {
-              const div = document.createElement('div');
-              div.className = "org-card";
-              div.style.display = "flex";
-              div.style.justifyContent = "space-between";
-              div.style.alignItems = "center";
-            
-              const info = `
-                <div style="flex: 1;">
-                  <h3>${org.org_name}</h3>
-                  <p><strong>Address:</strong> ${org.org_location}</p>
-                  <p><strong>Phone:</strong> ${org.org_phone}</p>
-                </div>
-              `;
 
-          const message_us=`<button class="messageOrgBtn" data-receiver-id="<?= $organization['user_id'] ?>">
-              💬 Message Us
-          </button>
-          `;
-              const image = `
-                <div style="width: 400px; height: 250px; overflow: hidden; border-radius: 10px; margin-left: 20px;">
-                  <img src="../uploads/${org.org_image}" style="width: 100%; height: 100%; object-fit: cover;" />
-                </div>
-              `;
-            
-              div.innerHTML = info +message_us+ image;
-              list.appendChild(div);
+
+              const div = document.createElement('div');
+div.className = "org-card";
+div.style.display = "flex";
+div.style.justifyContent = "space-between";
+div.style.alignItems = "center";
+
+const info = `
+  <div style="flex: 1;">
+    <h3>${org.org_name}</h3>
+    <p><strong>Address:</strong> ${org.org_location}</p>
+    <p><strong>Phone:</strong> ${org.org_phone}</p>
+    <div class="message-box">
+      <input type="text" class="messageInput" placeholder="Type your message..." data-org-id="${org.user_id}">
+      <button  class="sendMessageBtn" data-org-id="${org.user_id}">Send</button>
+    </div>
+  </div>
+`;
+const image = `
+  <div style="width: 400px; height: 250px; overflow: hidden; border-radius: 10px; margin-left: 20px;">
+    <img src="../uploads/${org.org_image}" style="width: 100%; height: 100%; object-fit: cover;" />
+  </div>
+`;
+
+div.innerHTML = info + image;
+list.appendChild(div);
+
             });
             
           }
         });
     }
-
+    
     function searchOrganizations() {
       currentSearch = document.getElementById("searchInput").value;
       currentPage = 1;

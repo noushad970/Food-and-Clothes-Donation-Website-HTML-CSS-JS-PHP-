@@ -39,12 +39,14 @@ function sendMessage() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       receiver_id: currentReceiverId,
-      message: msg
+      message: msg,
+      
     })
   }).then(res => res.json()).then(data => {
     if (data.success) {
       document.getElementById("chatInput").value = "";
       loadMessages(currentReceiverId);
+      
     }
   });
 }
@@ -82,9 +84,43 @@ function loadChatList() {
     });
 }
 
+// sending message to organization
+
+//sending org msg functionality
+
+document.addEventListener('click', function (e) {
+
+  if (e.target.classList.contains('sendMessageBtn')) {
+    const orgId = e.target.getAttribute('data-org-id');
+    const input = document.querySelector(`.messageInput[data-org-id="${orgId}"]`);
+    const message = input.value.trim();
 
 
+    if (message === "") {
+      alert("Please enter a message.");
+      return;
+    }
 
-
-
-
+    fetch('../php/send_message.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        receiver_id: orgId,
+        message: message
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Message sent!");
+        input.value = "";
+      } else {
+        alert("Failed to send message.");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error sending message.");
+    });
+  }
+});

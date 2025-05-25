@@ -112,3 +112,31 @@ body {
       cursor: pointer;
     }
 
+
+
+    .message-box {
+      margin-top: 10px;
+      display: flex;
+      gap: 5px;
+    }
+    
+    .messageInput {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    .sendMessageBtn {
+      padding: 8px 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .sendMessageBtn:hover {
+      background-color: #0056b3;
+    }
+    

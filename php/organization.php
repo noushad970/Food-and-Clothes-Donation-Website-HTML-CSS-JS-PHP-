@@ -12,6 +12,7 @@ $stmt = $conn->prepare("
         organization.org_name, 
         organization.org_location, 
         organization.org_phone,
+        organization.user_id,
         users.org_image
     FROM organization
     JOIN users ON organization.user_id = users.id

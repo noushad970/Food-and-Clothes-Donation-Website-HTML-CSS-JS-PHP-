@@ -1,4 +1,4 @@
-<!-- <?php
+ <?php
 require 'db.php';
 session_start();
 
@@ -14,5 +14,5 @@ if ($sender && $receiver && $message !== '') {
   echo json_encode(["success" => true]);
 } else {
   echo json_encode(["success" => false]);
-} -->
+} 
 
