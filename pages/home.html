@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Home</title>
-  <link rel="stylesheet" href="../css/homes.css" />
+  <link rel="stylesheet" href="../css/home.css" />
   <link rel="stylesheet" href="../css/header.css" />
   <link rel="stylesheet" href="../css/message.css" />
+  <link rel="stylesheet" href="../css/home_organization.css" />
   <style>
     .red-dot {
       width: 10px;
@@ -40,14 +41,13 @@
     <a href="posts.html">Posts</a>
     <a href="organization.html">Organization</a>
     <a href="about.html">ℹ️ About</a>
-    <button onclick="toggleChatPopup()" id="messageIcon">
+    <!-- <button onclick="toggleChatPopup()" id="messageIcon">
       💬 <span id="messageDot" class="red-dot" style="display: none;"></span>
-    </button>
+    </button> -->
     
     <!-- Add more buttons here -->
   </div>
 </section>
-<div>.</div>
 
 
   <div class="navbar">
@@ -67,28 +67,66 @@
 <div style="position: absolute; top: 10px; right: 10px;">
  
 </div> 
+<!-- organization section -->
+<main style="padding: 20px;">
+  <h2>Registered Organizations</h2>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by address...">
+    <button onclick="searchOrganizations()">Search</button>
+  </div>
+
+  <div id="orgList"></div>
+
+  <div class="pagination">
+    <button onclick="loadPreviousPage()">Previous Page</button>
+    <button onclick="loadNextPage()">Next Page</button>
+  </div>
+</main>
+
 <!-- home newsfeed -->
   <div class="newsfeed-container">
     <h2>Newsfeed</h2>
     <div id="postsContainer" class="post"></div>
   </div>
 
-  <!-- message popup -->
-  <div id="chatPopup" class="chat-popup">
-    <div class="chat-header">
-      <span id="chatTitle">Messages</span>
-      <button onclick="toggleChatPopup()">✖</button>
-    </div>
-    <div id="chatMessages" class="chat-messages">Loading...</div>
-    <div class="chat-input-area" style="display: none;">
-      <input type="text" id="chatInput" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
-    </div>
+  <!-- Popup Toggle Button -->
+<button id="openChatBtn" onclick="toggleChatPopup()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;">
+  💬 Messages <span id="messageDot" style="display: none; width: 10px; height: 10px; background: red; border-radius: 50%; margin-left: 5px;"></span>
+</button>
+
+
+
+<!-- Popup Chat Window -->
+<div id="chatPopup" style="display: none; position: fixed; bottom: 60px; right: 20px; width: 400px; height: 500px; background: white; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); display: flex; flex-direction: column;">
+  <div style="background: #007BFF; color: white; padding: 10px; text-align: center;">
+      Chat Room
+      <button style="float: right; background: transparent; border: none; color: white;" onclick="toggleChatPopup()">❌</button>
   </div>
+  <div style="flex: 1; display: flex;">
+      <!-- User List -->
+      <div id="userList" style="width: 40%; border-right: 1px solid #ddd; overflow-y: auto; padding: 5px;">
+          <!-- Users loaded here -->
+      </div>
+      <!-- Chat Area -->
+      <div style="flex: 1; display: flex; flex-direction: column;">
+          <div id="chatTitle" style="padding: 5px; font-weight: bold;">Select a user to chat</div>
+          <div id="chatMessages" style="flex: 1; padding: 5px; overflow-y: auto; border-bottom: 1px solid #ddd;">
+              <p style="text-align: center; color: gray;">No conversation selected</p>
+          </div>
+          <div class="chat-input-area" style="display: none; padding: 5px; display: flex;">
+              <input id="chatInput" type="text" placeholder="Type a message..." style="flex: 1; padding: 5px;">
+              <button onclick="sendMessage()" style="padding: 5px 10px;">Send</button>
+          </div>
+      </div>
+  </div>
+</div>
+
   
 
   <script src="../js/home.js"></script>
-  <script src="../js/messages.js"></script>
+  <script src="../js/message.js"></script>
+  <script src="../js/organization.js"></script>
   <script>
     fetch('../php/get_user_data.php')
       .then(res => res.json())
@@ -96,6 +134,94 @@
         const pic = data.profile_picture ? `../uploads/${data.profile_picture}` : '../assets/default.jpg';
         document.getElementById('profilePic').src = pic;
       });
+
+      
+    
   </script>
+
+  <script>
+    // Set globally
+    let currentReceiverId = null;
+    
+    function toggleChatPopup() {
+      const popup = document.getElementById("chatPopup");
+      if (popup.style.display === "flex") {
+        popup.style.display = "none";
+      } else {
+        popup.style.display = "flex";
+        loadChatList();
+      }
+    }
+    function checkUnread() {
+      fetch("php/check_unread.php")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("messageDot").style.display = data.unread > 0 ? "inline-block" : "none";
+        });
+    }
+    checkUnread();
+    setInterval(checkUnread, 10000);
+    
+    
+    function openChatWith(receiverId, receiverName = "User") {
+      currentReceiverId = receiverId;
+      document.getElementById("chatTitle").innerText = `Chat with ${receiverName}`;
+      document.querySelector(".chat-input-area").style.display = "flex";
+      loadMessages(receiverId);
+    }
+    
+    function sendMessage() {
+      const msg = document.getElementById("chatInput").value.trim();
+      if (!msg || !currentReceiverId) return;
+    
+      fetch("php/send_message.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          receiver_id: currentReceiverId,
+          message: msg
+        })
+      }).then(res => res.json()).then(data => {
+        if (data.success) {
+          document.getElementById("chatInput").value = "";
+          loadMessages(currentReceiverId);
+        }
+      });
+    }
+    
+    function loadMessages(receiverId) {
+      fetch("php/fetch_message.php?receiver_id=" + receiverId)
+        .then(res => res.json())
+        .then(data => {
+          const box = document.getElementById("chatMessages");
+          box.innerHTML = "";
+          data.forEach(msg => {
+            const div = document.createElement("div");
+            div.className = msg.is_sender ? "chat-message sender" : "chat-message receiver";
+            div.innerText = msg.message;
+            box.appendChild(div);
+          });
+          box.scrollTop = box.scrollHeight;
+        });
+    }
+    
+    function loadChatList() {
+      document.getElementById("chatMessages").innerHTML = "Loading chats...";
+      fetch("php/fetch_chat_users.php")
+        .then(res => res.json())
+        .then(data => {
+          const box = document.getElementById("chatMessages");
+          box.innerHTML = "";
+          data.forEach(user => {
+            const div = document.createElement("div");
+            div.className = "chat-user";
+            div.innerText = user.name;
+            div.onclick = () => openChatWith(user.id, user.name);
+            box.appendChild(div);
+          });
+        });
+    }
+    </script>
+    
 </body>
 </html>

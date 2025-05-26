@@ -65,4 +65,23 @@ CREATE TABLE messages (
   is_read TINYINT DEFAULT 0
 );
 
+ALTER TABLE organization ADD COLUMN rating_total INT DEFAULT 0;
+ALTER TABLE organization ADD COLUMN rating_count INT DEFAULT 0;
+
+-- Drop old columns if present (be sure you want this!)
+ALTER TABLE organization DROP COLUMN rating_total;
+ALTER TABLE organization DROP COLUMN rating_count;
+
+-- Create the ratings table
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    org_id INT NOT NULL,
+    rater_id INT NOT NULL,
+    user_rating INT NOT NULL CHECK (user_rating BETWEEN 1 AND 5),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (org_id) REFERENCES organization(id),
+    FOREIGN KEY (rater_id) REFERENCES users(id)
+);
+ALTER TABLE messages CHANGE message messagex TEXT;
+
 
