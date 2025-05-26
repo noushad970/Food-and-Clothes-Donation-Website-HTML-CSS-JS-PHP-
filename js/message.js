@@ -9,6 +9,8 @@ function checkUnread() {
 checkUnread();
 setInterval(checkUnread, 10000);
 
+
+    
 let currentReceiverId = null;
 
 // Toggle popup open/close
@@ -53,39 +55,12 @@ function openChatWith(receiverId, receiverName = "User") {
 
 
 
-
-
-
-
-
-function loadMessages(receiverId) {
-  fetch("../php/fetch_messages.php?receiver_id=" + receiverId)
-    .then(res => res.json())
-    .then(data => {
-      const box = document.getElementById("chatMessages");
-      box.innerHTML = "";
-      data.forEach(msg => {
-        const div = document.createElement("div");
-        div.className = msg.is_sender ? "chat-message sender" : "chat-message receiver";
-        div.innerText = msg.message;
-        box.appendChild(div);
-      });
-      box.scrollTop = box.scrollHeight;
-    })
-      .catch(err => {
-          console.error('Fetch error:', err);
-          const box = document.getElementById("chatMessages");
-          box.innerHTML = `<p style="color: red;">Error loading messages.</p>`;
-      });
-}
-
-
 // Send message to the selected receiver
 function sendMessage() {
   const input = document.getElementById("chatInput");
   const msg = input.value.trim();
   if (!msg || !currentReceiverId) return;
-
+  
   fetch("../php/send_message.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -99,42 +74,8 @@ function sendMessage() {
       if (data.success) {
           input.value = "";
           loadMessages(currentReceiverId);
+
       }
   });
 }
 
-// Global listener for sending messages directly to organization boxes
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('sendMessageBtn')) {
-      const orgId = e.target.getAttribute('data-org-id');
-      const input = document.querySelector(`.messageInput[data-org-id="${orgId}"]`);
-      const message = input.value.trim();
-
-      if (message === "") {
-          alert("Please enter a message.");
-          return;
-      }
-
-      fetch('../php/send_message.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-              receiver_id: orgId,
-              message: message
-          })
-      })
-      .then(res => res.json())
-      .then(data => {
-          if (data.success) {
-              alert("Message sent!");
-              input.value = "";
-          } else {
-              alert("Failed to send message.");
-          }
-      })
-      .catch(err => {
-          console.error(err);
-          alert("Error sending message.");
-      });
-  }
-});

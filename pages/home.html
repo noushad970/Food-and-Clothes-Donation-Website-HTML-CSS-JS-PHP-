@@ -21,6 +21,8 @@
     }
     
     
+
+    
   </style>
   
 </head>
@@ -41,6 +43,14 @@
     <a href="posts.html">Posts</a>
     <a href="organization.html">Organization</a>
     <a href="about.html">ℹ️ About</a>
+    
+    <h3 style="margin-left: 200px; color:#ddd">Welcome, <span id="username">Guest</span>!</h3>
+    
+      
+      <div class="nav-right" id="navButtons">
+        <!-- Buttons will be injected here -->
+     
+    </div>
     <!-- <button onclick="toggleChatPopup()" id="messageIcon">
       💬 <span id="messageDot" class="red-dot" style="display: none;"></span>
     </button> -->
@@ -50,23 +60,51 @@
 </section>
 
 
-  <div class="navbar">
-    <div class="nav-left">
-      <h2>Food Donation Platform</h2>
-    </div>
-    <div class="nav-right" id="navButtons">
-      <!-- Buttons will be injected here -->
-    </div>
-  </div>
+  
 
-  <div class="container">
-    <h3>Welcome, <span id="username">Guest</span>!</h3>
-    <p>This is your homepage after login. You can create or view posts here.</p>
+
+<!-- image slider panel -->
+<div class="background-overlay">
+  <div class="slider-container">
+    <div class="slider-track">
+      <div class="slide">
+        <img src="../images/slide1.jpg" alt="Donate 1">
+        <div class="slide-message">Every small donation makes a big difference!</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide2.jpg" alt="Donate 2">
+        <div class="slide-message">Help feed a hungry child today.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide3.jpg" alt="Donate 3">
+        <div class="slide-message">Your kindness brings hope to families in need.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide4.jpg" alt="Donate 4">
+        <div class="slide-message">Be a light in someone’s darkest hour.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide5.jpg" alt="Donate 5">
+        <div class="slide-message">Together, we can fight poverty.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide6.jpg" alt="Donate 6">
+        <div class="slide-message">Spread love through giving.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide7.jpg" alt="Donate 7">
+        <div class="slide-message">Your support changes lives.</div>
+      </div>
+      <div class="slide">
+        <img src="../images/slide8.jpg" alt="Donate 8">
+        <div class="slide-message">Join us in helping the poor.</div>
+      </div>
+    </div>
   </div>
-<!-- show profile pic in home -->
-<div style="position: absolute; top: 10px; right: 10px;">
- 
-</div> 
+</div>
+
+  
+
 <!-- organization section -->
 <main style="padding: 20px;">
   <h2>Registered Organizations</h2>
@@ -91,24 +129,46 @@
   </div>
 
   <!-- Popup Toggle Button -->
-<button id="openChatBtn" onclick="toggleChatPopup()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;">
-  💬 Messages <span id="messageDot" style="display: none; width: 10px; height: 10px; background: red; border-radius: 50%; margin-left: 5px;"></span>
-</button>
 
+  <a href="../chatting/chatroom.php" style="position: fixed; bottom: 20px; right: 20px;">
+    <button style="
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4267B2;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+    ">
+      Messages
+      <span id="messageDot" style="
+        display: none;
+        width: 14px;
+        height: 14px;
+        background: red;
+        border-radius: 50%;
+        margin-left: 10px;
+      "></span>
+    </button>
+  </a>
+  
 
 
 <!-- Popup Chat Window -->
-<div id="chatPopup" style="display: none; position: fixed; bottom: 60px; right: 20px; width: 400px; height: 500px; background: white; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); display: flex; flex-direction: column;">
+<!-- <div id="chatPopup" style="display: none; position: fixed; bottom: 60px; right: 20px; width: 400px; height: 500px; background: white; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); display: flex; flex-direction: column;">
   <div style="background: #007BFF; color: white; padding: 10px; text-align: center;">
       Chat Room
       <button style="float: right; background: transparent; border: none; color: white;" onclick="toggleChatPopup()">❌</button>
   </div>
   <div style="flex: 1; display: flex;">
-      <!-- User List -->
+      
       <div id="userList" style="width: 40%; border-right: 1px solid #ddd; overflow-y: auto; padding: 5px;">
-          <!-- Users loaded here -->
+          
       </div>
-      <!-- Chat Area -->
+     
       <div style="flex: 1; display: flex; flex-direction: column;">
           <div id="chatTitle" style="padding: 5px; font-weight: bold;">Select a user to chat</div>
           <div id="chatMessages" style="flex: 1; padding: 5px; overflow-y: auto; border-bottom: 1px solid #ddd;">
@@ -120,7 +180,7 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
 
   
 
@@ -133,94 +193,54 @@
       .then(data => {
         const pic = data.profile_picture ? `../uploads/${data.profile_picture}` : '../assets/default.jpg';
         document.getElementById('profilePic').src = pic;
-      });
-
-      
+      });  
     
+      //slider image
+      const track = document.querySelector('.slider-track');
+      const slides = Array.from(track.children);
+      slides.forEach(slide => {
+      const clone = slide.cloneNode(true);
+      track.appendChild(clone);
+        });
   </script>
 
   <script>
-    // Set globally
-    let currentReceiverId = null;
+  
+    // Global listener for sending messages directly to organization boxes
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('sendMessageBtn')) {
+          const orgId = e.target.getAttribute('data-org-id');
+          const input = document.querySelector(`.messageInput[data-org-id="${orgId}"]`);
+          const message = input.value.trim();
     
-    function toggleChatPopup() {
-      const popup = document.getElementById("chatPopup");
-      if (popup.style.display === "flex") {
-        popup.style.display = "none";
-      } else {
-        popup.style.display = "flex";
-        loadChatList();
+          if (message === "") {
+              alert("Please enter a message.");
+              return;
+          }
+    
+          fetch('../php/send_message.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  receiver_id: orgId,
+                  message: message
+              })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  alert("Message sent!");
+                  input.value = "";
+              } else {
+                  alert("Failed to send message.");
+              }
+          })
+          .catch(err => {
+              console.error(err);
+              alert("Error sending message.");
+          });
       }
-    }
-    function checkUnread() {
-      fetch("php/check_unread.php")
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("messageDot").style.display = data.unread > 0 ? "inline-block" : "none";
-        });
-    }
-    checkUnread();
-    setInterval(checkUnread, 10000);
-    
-    
-    function openChatWith(receiverId, receiverName = "User") {
-      currentReceiverId = receiverId;
-      document.getElementById("chatTitle").innerText = `Chat with ${receiverName}`;
-      document.querySelector(".chat-input-area").style.display = "flex";
-      loadMessages(receiverId);
-    }
-    
-    function sendMessage() {
-      const msg = document.getElementById("chatInput").value.trim();
-      if (!msg || !currentReceiverId) return;
-    
-      fetch("php/send_message.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          receiver_id: currentReceiverId,
-          message: msg
-        })
-      }).then(res => res.json()).then(data => {
-        if (data.success) {
-          document.getElementById("chatInput").value = "";
-          loadMessages(currentReceiverId);
-        }
-      });
-    }
-    
-    function loadMessages(receiverId) {
-      fetch("php/fetch_message.php?receiver_id=" + receiverId)
-        .then(res => res.json())
-        .then(data => {
-          const box = document.getElementById("chatMessages");
-          box.innerHTML = "";
-          data.forEach(msg => {
-            const div = document.createElement("div");
-            div.className = msg.is_sender ? "chat-message sender" : "chat-message receiver";
-            div.innerText = msg.message;
-            box.appendChild(div);
-          });
-          box.scrollTop = box.scrollHeight;
-        });
-    }
-    
-    function loadChatList() {
-      document.getElementById("chatMessages").innerHTML = "Loading chats...";
-      fetch("php/fetch_chat_users.php")
-        .then(res => res.json())
-        .then(data => {
-          const box = document.getElementById("chatMessages");
-          box.innerHTML = "";
-          data.forEach(user => {
-            const div = document.createElement("div");
-            div.className = "chat-user";
-            div.innerText = user.name;
-            div.onclick = () => openChatWith(user.id, user.name);
-            box.appendChild(div);
-          });
-        });
-    }
+    });
     </script>
     
 </body>
