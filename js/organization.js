@@ -70,7 +70,6 @@ function fetchOrganizations(page = 1, search = "") {
 
         list.appendChild(div);
       });
-
       setupStarRating();
     });
 }

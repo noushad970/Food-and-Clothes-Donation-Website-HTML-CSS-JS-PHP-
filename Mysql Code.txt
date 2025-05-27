@@ -17,6 +17,14 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sender_id INT NOT NULL,
+  receiver_id INT NOT NULL,
+  message TEXT NOT NULL,
+  is_read TINYINT(1) DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
 
 CREATE TABLE posts (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,8 +58,6 @@ CREATE TABLE messages (
   message TEXT NOT NULL,
   is_read TINYINT(1) DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (sender_id) REFERENCES users(id),
-  FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
 INSERT INTO messages (sender_id, receiver_id, message)
@@ -85,5 +91,13 @@ CREATE TABLE ratings (
     FOREIGN KEY (rater_id) REFERENCES users(id)
 );
 ALTER TABLE messages CHANGE message messagex TEXT;
+
+CREATE TABLE user_chats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    chat_user_id INT NOT NULL,
+    UNIQUE (user_id, chat_user_id)
+);
+INSERT IGNORE INTO user_chats (user_id, chat_user_id) VALUES ($receiver_id, $sender_id);
 
 
